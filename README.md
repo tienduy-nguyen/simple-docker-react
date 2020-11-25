@@ -196,7 +196,7 @@ Check [AWS Elastic Beanstalk](https://eu-west-3.console.aws.amazon.com/elasticbe
     app: $AWS_EB_APP
     env: $AWS_EB_ENV
     bucket_name: $AWS_BUCKER_NAME
-    bucket_path: $AWS_BUCKER_PATH
+    bucket_path: react-docker
     on:
       branch: master
     access_key_id: $AWS_ACCESS_KEY
