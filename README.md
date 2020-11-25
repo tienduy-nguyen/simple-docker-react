@@ -6,6 +6,17 @@ Setup Docker, Travis CI, AWS for React project
 ![Travis (.com)](https://img.shields.io/travis/com/tienduy-nguyen/simple-docker-react)
 
 ---
+
+- [React Project with Docker](#react-project-with-docker)
+  - [Getting started](#getting-started)
+  - [Docker volumes](#docker-volumes)
+  - [Docker compose](#docker-compose)
+  - [Executing test](#executing-test)
+  - [Work with nginx](#work-with-nginx)
+  - [Travis CI setup in GitHub repo](#travis-ci-setup-in-github-repo)
+    - [Create account travis-ci](#create-account-travis-ci)
+    - [Configuration](#configuration)
+  - [Using AWS Elastic Beanstalk](#using-aws-elastic-beanstalk)
 ## Getting started
 Steps to follow:
 - Create `Dockerfile`
