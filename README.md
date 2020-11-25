@@ -127,7 +127,7 @@
 - Sign-in  [travis-ci.org](https://travis-ci.org) with your account Github
 - Go to [travis-ci.org/account/repositories](https://travis-ci.org/account/repositories) and check run for the repository what we need to deploy automatically with travis-ci
 ### Configuration
-We will use a Travis YML file Configuration: `travis.yml`
+We will use a Travis YML file Configuration: `.travis.yml`
 
 This file:
 - Tell Travis wee need a copy of docker running
