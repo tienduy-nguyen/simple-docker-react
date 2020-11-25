@@ -8,3 +8,7 @@ before_install:
 
 script:
   - docker run tienduynguyen/simple-docker-react yarn test -- --coverage
+
+branches:
+  only:
+    - master
