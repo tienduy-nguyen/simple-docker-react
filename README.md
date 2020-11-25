@@ -1,5 +1,13 @@
 # React Project with Docker
+<p align="center">
+Setup Docker, Travis CI, AWS for React project
+<p align="center">
 
+![Travis (.com)](https://img.shields.io/travis/com/tienduy-nguyen/simple-docker-react)
+
+---
+## Getting started
+Steps to follow:
 - Create `Dockerfile`
   We will create Dockerfile for each purpose:
   - Dockerfile: production
@@ -137,14 +145,62 @@ This file:
 
 ```yml
 # travis.yml
+language: generic
 sudo: required
-services: -docker
+
+services:
+  - docker
 
 before_install:
   - docker build -t tienduynguyen/simple-docker-react -f Dockerfile.dev .
   # docker build -t <username docker>/<name  image> -f <Dockerfile>
 
 script:
-  - docker run -it tienduynguyen/simple-docker-react yarn test -- --coverage
+  - docker run -e CI=true -it tienduynguyen/simple-docker-react yarn test --coverage
+
+branches:
+  only:
+    - master #branch to run CI-CD
 
 ```
+## Using AWS Elastic Beanstalk
+
+AWS Elastic Beanstalk is an easy-to-use service for deploying and scaling web applications and services developed with Java, .NET, PHP, Node.js, Python, Ruby, Go, and Docker on familiar servers such as Apache, Nginx, Passenger, and IIS.
+
+Check [AWS Elastic Beanstalk](https://eu-west-3.console.aws.amazon.com/elasticbeanstalk/home?region=eu-west-3#/welcome) for more information.
+
+- Create AWS Elastic Beanstalk application
+- Create an user form IAM service of AWS
+- Update user access in `.travis.yml`
+  ```yml
+  language: generic
+  sudo: required
+
+  services:
+    - docker
+
+  before_install:
+    - docker build -t tienduynguyen/simple-docker-react -f Dockerfile.dev .
+    # docker build -t <username docker>/<name  image> -f <Dockerfile>
+
+  script:
+    - docker run -e CI=true -it tienduynguyen/simple-docker-react yarn test --coverage
+
+  branches:
+    only:
+      - master
+
+  deploy:
+    provider: elasticbeanstalk
+    region: eu-west-3
+    app: $AWS_EB_APP
+    env: $AWS_EB_ENV
+    bucket_name: $AWS_BUCKER_NAME
+    bucket_path: $AWS_BUCKER_PATH
+    on:
+      branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+  ```
+
+  Environment variables key-value $AWS: added directly in [travis-ci.com](https://travis-ci.com)

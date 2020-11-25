@@ -14,3 +14,15 @@ script:
 branches:
   only:
     - master
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-3
+  app: $AWS_EB_APP
+  env: $AWS_EB_ENV
+  bucket_name: $AWS_BUCKER_NAME
+  bucket_path: $AWS_BUCKER_PATH
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
