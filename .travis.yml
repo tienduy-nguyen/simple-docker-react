@@ -9,7 +9,7 @@ before_install:
   # docker build -t <username docker>/<name  image> -f <Dockerfile>
 
 script:
-  - docker run -e CI=true -it tienduynguyen/simple-docker-react yarn test -- --coverage
+  - docker run -e CI=true -it tienduynguyen/simple-docker-react yarn test --coverage
 
 branches:
   only:
