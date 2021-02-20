@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { Database } from 'sqlite3';
 
+// This class is a reference to use for connect database direct method
 export class SqlService {
   constructor(public db: Database) {}
 

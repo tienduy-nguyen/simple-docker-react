@@ -5,7 +5,7 @@ let db: any;
 async function main() {
   // Connect db
   try {
-    db = connectDb();
+    db = await connectDb();
     console.log('Db connected');
   } catch (error) {
     console.error(error.message);
