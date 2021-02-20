@@ -1,5 +1,5 @@
-import express from 'express';
 import { connectDb } from './database';
+import { App } from './app';
 
 let db: any;
 async function main() {
@@ -13,16 +13,8 @@ async function main() {
   }
 
   // Init express application
-  const app = express();
-
-  // Apply middleware
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-
-  // Init server
-  app.listen(3000, () =>
-    console.log('Server is running at http://localhost:3000/'),
-  );
+  const app = new App();
+  app.listen(3000);
 }
 
 main().catch((err) => {

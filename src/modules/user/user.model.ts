@@ -1,4 +1,6 @@
-export class UserModel {
+import { generateFullName } from 'src/utils/generate-fullname';
+
+export class User {
   id: number;
   email: string;
   first_name: string;
@@ -46,17 +48,7 @@ export class UserModel {
    * @return  {string}  return full_name
    */
   private _getFullName(): string {
-    let newFirstName = '';
-    let newLastName = '';
-    if (this.first_name) {
-      newFirstName =
-        this.first_name.charAt(0).toUpperCase() + this.last_name.slice(1);
-    }
-    if (this.last_name) {
-      newLastName =
-        this.last_name.charAt(0).toUpperCase() + this.last_name.slice(1);
-    }
-    return `${newFirstName} ${newLastName}`;
+    return generateFullName(this.first_name, this.last_name);
   }
 }
 
