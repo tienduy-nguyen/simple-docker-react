@@ -1,10 +1,16 @@
+import { Database } from 'sqlite';
 import { NotFoundException } from 'src/common/exceptions';
 import { generateFullName } from 'src/utils/generate-fullname';
+import { inject, injectable } from 'tsyringe';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './user.model';
 
+@injectable()
 export class UserService {
-  constructor(public db: any) {}
+  constructor(
+    @inject('Database')
+    private db: Database,
+  ) {}
 
   public async getUsers(): Promise<User[]> {
     const query = `SELECT * FROM "users";`;
@@ -21,7 +27,7 @@ export class UserService {
     return await this.db.get(query);
   }
 
-  public async createUser(data: CreateUserDto): Promise<User> {
+  public async createUser(data: CreateUserDto) {
     const {
       email,
       first_name,
@@ -58,10 +64,10 @@ export class UserService {
        ${userTemp.createdAt}, ${userTemp.updatedAt})
     `;
 
-    return await this.db.run(mutation);
+    await this.db.run(mutation);
   }
 
-  public async updateUserById(id: number, data: UpdateUserDto): Promise<User> {
+  public async updateUserById(id: number, data: UpdateUserDto) {
     const user: User = await this.getUserById(id);
     if (!user) {
       throw new NotFoundException('User not found');

@@ -1,4 +1,4 @@
-import { open } from 'sqlite';
+import { open, Database } from 'sqlite';
 import sqlite3 from 'sqlite3';
 
 /**
@@ -10,8 +10,10 @@ import sqlite3 from 'sqlite3';
  * which is sqlite which offers a Promise API around sqlite3.
  */
 
-let db: any;
-const initDatabase = async (name = 'src/database/dev.db') => {
+let db: Database;
+const initDatabase = async (
+  name = 'src/database/dev.db',
+): Promise<Database> => {
   if (db) {
     return db;
   }

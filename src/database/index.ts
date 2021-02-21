@@ -1,15 +1,22 @@
 import fs from 'fs';
-import { initDatabase } from './db-driver';
+import { Database, open } from 'sqlite';
+import sqlite3 from 'sqlite3';
 
 /**
  * Connect database with sqlite3 & sqlite
  *
  * @return  {[db: any]} database connection
  */
-export const connectDb = async () => {
-  let db_path: string;
+
+let db: Database;
+const connectDb = async (): Promise<Database> => {
+  // Return db if already connected
+  if (db) {
+    return db;
+  }
 
   // Get database path name for different environment
+  let db_path: string;
   switch (process.env.NODE_ENV) {
     case 'development':
       db_path = 'src/database/dev.db';
@@ -25,6 +32,12 @@ export const connectDb = async () => {
       break;
   }
 
+  // Get db driver
+  db = await open({
+    filename: db_path,
+    driver: sqlite3.Database,
+  });
+
   // Get mutation create tables string from files
   const usersSchema = fs
     .readFileSync('src/database/sql-schemas/users.schema.sql')
@@ -33,15 +46,14 @@ export const connectDb = async () => {
     .readFileSync('src/database/sql-schemas/user-settings.schema.sql')
     .toString();
 
-  // Get db driver
-  const db = await initDatabase(db_path);
-
   // Init tables if not exist
   await db.run(usersSchema);
   await db.run(userSettingsSchema);
 
   return db;
 };
+
+export { connectDb, db };
 
 // API
 // INSERT, CREATE TABLE, UPDATE etc.

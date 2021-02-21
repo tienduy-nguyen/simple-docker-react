@@ -1,12 +1,14 @@
 import express, { Application } from 'express';
+import { container } from 'tsyringe';
+import { AppController } from './app/app.controller';
 import { errorMiddleware } from './common/middlewares';
-// import { HttpController } from './common/types/http.types';
+import { HttpController } from './common/types/http.types';
 
 export class App {
-  // private _controllers = [] as HttpController[];
+  private _controllers = [] as HttpController[];
   private _app: Application;
   private _port = 3000;
-  // private _globalPrefix = '';
+  private _globalPrefix = '';
 
   constructor() {
     this._app = express() as Application;
@@ -16,9 +18,9 @@ export class App {
     return this._app;
   }
 
-  // public useGlobalPrefix(prefix: string) {
-  //   this._globalPrefix = '/' + prefix;
-  // }
+  public useGlobalPrefix(prefix: string) {
+    this._globalPrefix = '/' + prefix;
+  }
 
   public listen(port: number, alert = true) {
     this._port = port;
@@ -55,12 +57,12 @@ export class App {
       res.status(200).end();
     });
 
-    // // Get all controller registered from app controller
-    // const appControllers = container.resolve(AppController);
-    // this._controllers = appControllers.all;
+    // Get all controller registered from app controller
+    const appControllers = container.resolve(AppController);
+    this._controllers = appControllers.all;
 
-    // this._controllers.forEach((c) => {
-    //   this.app.use(this.globalPrefix, c.router);
-    // });
+    this._controllers.forEach((c) => {
+      this._app.use(this._globalPrefix, c.router);
+    });
   }
 }
