@@ -1,30 +1,31 @@
 import { Database } from 'sqlite';
 import { NotFoundException } from 'src/common/exceptions';
 import { generateFullName } from 'src/utils/generate-fullname';
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './user.model';
+import { db } from 'src/database';
 
 @injectable()
 export class UserService {
-  constructor(
-    @inject('Database')
-    private db: Database,
-  ) {}
+  private _db: Database;
+  constructor() {
+    this._db = db;
+  }
 
   public async getUsers(): Promise<User[]> {
     const query = `SELECT * FROM "users";`;
-    return await this.db.get(query);
+    return await this._db.get(query);
   }
 
   public async getUserByEmail(email: string): Promise<User> {
     const query = `SELECT * FROM "users" where email='${email}';`;
-    return await this.db.get(query);
+    return await this._db.get(query);
   }
 
   public async getUserById(id: number): Promise<User> {
     const query = `SELECT * FROM "users" where id='${id}';`;
-    return await this.db.get(query);
+    return await this._db.get(query);
   }
 
   public async createUser(data: CreateUserDto) {
@@ -64,7 +65,7 @@ export class UserService {
        ${userTemp.createdAt}, ${userTemp.updatedAt})
     `;
 
-    await this.db.run(mutation);
+    await this._db.run(mutation);
   }
 
   public async updateUserById(id: number, data: UpdateUserDto) {
@@ -112,11 +113,11 @@ export class UserService {
     
     WHERE id = '${id}' 
     `;
-    return await this.db.run(mutation);
+    return await this._db.run(mutation);
   }
 
   public async deleteUser(id: number) {
     const mutation = `DELETE FROM "user" where id=${id}`;
-    return await this.db.run(mutation);
+    return await this._db.run(mutation);
   }
 }

@@ -1,3 +1,4 @@
+import 'src/app/app.container';
 import express, { Application } from 'express';
 import { container } from 'tsyringe';
 import { AppController } from './app/app.controller';
