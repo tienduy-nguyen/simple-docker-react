@@ -4,12 +4,12 @@ import { generateFullName } from 'src/utils/generate-fullname';
 import { injectable } from 'tsyringe';
 import { UpdateUserDto } from './dto';
 import { User } from './user.model';
-import { DatabaseService } from 'src/database/database.service';
+import { IDatabaseService } from 'src/database/database.service.interface';
 
 @injectable()
 export class UserService {
   private _db: Database;
-  constructor(dbService: DatabaseService) {
+  constructor(dbService: IDatabaseService) {
     this._db = dbService.getConnection;
   }
 
