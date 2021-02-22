@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { Request, Response, NextFunction } from 'express';
 import { NotFoundException } from 'src/common/exceptions';
 import { UpdateUserDto } from './dto';
+import handler from 'express-async-handler';
 
 @injectable()
 export class UserController {
@@ -15,10 +16,10 @@ export class UserController {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/`, this.getUsers);
-    this.router.get(`${this.path}/:id`, this.getUser);
-    this.router.put(`${this.path}/:id`, this.updateUser);
-    this.router.delete(`${this.path}/:id`, this.deleteUser);
+    this.router.get(`${this.path}/`, handler(this.getUsers));
+    this.router.get(`${this.path}/:id`, handler(this.getUser));
+    this.router.put(`${this.path}/:id`, handler(this.updateUser));
+    this.router.delete(`${this.path}/:id`, handler(this.deleteUser));
   }
 
   /* Private method for controller */

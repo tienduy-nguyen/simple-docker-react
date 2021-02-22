@@ -13,6 +13,7 @@ import { JwtService } from './services/jwt.service';
 import { PayloadToken, RequestWithUser } from 'src/common/types';
 import { SESSION_AUTH } from 'src/common/config/session.config';
 import { User } from '../user/user.model';
+import handler from 'express-async-handler';
 @injectable()
 export class UserController {
   public path = '/users';
@@ -27,10 +28,10 @@ export class UserController {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.me);
-    this.router.post(`${this.path}`, this.login);
-    this.router.post(`${this.path}/register`, this.register);
-    this.router.delete(`${this.path}`, this.logout);
+    this.router.get(`${this.path}`, handler(this.me));
+    this.router.post(`${this.path}`, handler(this.login));
+    this.router.post(`${this.path}/register`, handler(this.register));
+    this.router.delete(`${this.path}`, handler(this.logout));
   }
 
   /* Private method for controller */
