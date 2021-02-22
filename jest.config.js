@@ -1,10 +1,11 @@
 module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src',
+  rootDir: './',
   moduleNameMapper: {
-    '@common/(.*)': '<rootDir>/common/$1',
-    '@modules/(.*)': '<rootDir>/modules/$1',
-    '@app/(.*)': '<rootDir>/app/$1',
+    'src/(.*)': '<rootDir>/src/$1',
+    '@common/(.*)': '<rootDir>/src/common/$1',
+    '@modules/(.*)': '<rootDir>/src/modules/$1',
+    '@app/(.*)': '<rootDir>/src/app/$1',
   },
   testRegex: '.*\\.spec\\.ts$',
   transform: {
@@ -13,5 +14,5 @@ module.exports = {
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
-  setupFiles: ['../jest.setup.ts'],
+  setupFiles: ['./jest.setup.ts'],
 };
