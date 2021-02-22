@@ -3,7 +3,8 @@ import { injectable } from 'tsyringe';
 import { UserService } from './user.service';
 import { Request, Response, NextFunction } from 'express';
 import { NotFoundException } from 'src/common/exceptions';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { UpdateUserDto } from './dto';
+
 @injectable()
 export class UserController {
   public path = '/users';
@@ -16,7 +17,6 @@ export class UserController {
   private initializeRoutes() {
     this.router.get(`${this.path}/`, this.getUsers);
     this.router.get(`${this.path}/:id`, this.getUser);
-    this.router.post(`${this.path}`, this.createUser);
     this.router.put(`${this.path}/:id`, this.updateUser);
     this.router.delete(`${this.path}/:id`, this.deleteUser);
   }
@@ -41,20 +41,6 @@ export class UserController {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-      res.json(user);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  private createUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    try {
-      const data: CreateUserDto = req.body;
-      const user = await this.userService.createUser(data);
       res.json(user);
     } catch (error) {
       next(error);

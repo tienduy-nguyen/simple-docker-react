@@ -1,6 +1,4 @@
-import { Status } from '../user.model';
-
-export class CreateUserDto {
+export class RegisterUserDto {
   email: string;
   password: string;
   first_name?: string;

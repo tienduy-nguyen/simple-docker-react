@@ -2,16 +2,15 @@ import { Database } from 'sqlite';
 import { NotFoundException } from 'src/common/exceptions';
 import { generateFullName } from 'src/utils/generate-fullname';
 import { injectable } from 'tsyringe';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { UpdateUserDto } from './dto';
 import { User } from './user.model';
-import { db } from 'src/database';
-import argon2 from 'argon2';
+import { DatabaseService } from 'src/database/database.service';
 
 @injectable()
 export class UserService {
   private _db: Database;
-  constructor() {
-    this._db = db;
+  constructor(dbService: DatabaseService) {
+    this._db = dbService.getConnection;
   }
 
   public async getUsers(): Promise<User[]> {
@@ -28,59 +27,6 @@ export class UserService {
   public async getUserById(id: number | string): Promise<User> {
     const query = `SELECT * FROM "users" where id=${id};`;
     return await this._db.get(query);
-  }
-
-  public async createUser(data: CreateUserDto) {
-    const {
-      email,
-      first_name,
-      last_name,
-      birthdate,
-      city,
-      country,
-      street,
-      zip,
-    } = data;
-    let password = await argon2.hash(data.password);
-
-    const userTemp = new User({
-      email,
-      password,
-      first_name,
-      last_name,
-      birthdate,
-      street,
-      city,
-      country,
-      zip,
-    });
-    const mutation = `
-    INSERT INTO "users" (email, password, first_name, last_name, 
-                        full_name, birthdate, street, 
-                        city, country, zip, status, 
-                        createdAt, updatedAt)
-
-                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);
-    `;
-    const values = [
-      email,
-      password,
-      first_name,
-      last_name,
-      userTemp.full_name,
-      birthdate,
-      street,
-      city,
-      country,
-      zip,
-      'ACTIVE',
-      userTemp.createdAt,
-      userTemp.updatedAt,
-    ];
-
-    await this._db.run(mutation, values);
-    userTemp.password = '';
-    return userTemp;
   }
 
   public async updateUserById(id: number | string, data: UpdateUserDto) {

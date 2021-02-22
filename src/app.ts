@@ -35,13 +35,16 @@ export class App {
 
   /* Private methods */
   private async bootstrapServer() {
-    // Init middleware
-    this._app.use(express.json());
-    this._app.use(express.urlencoded({ extended: true }));
+    // We can also init middleware here
+    // eg:
+    // this._app.use(express.json());
+    // this._app.use(express.urlencoded({ extended: true }));
     // ...-> use cors, helmet, cookie parser ....
 
+    // Bootstrap all controller routing of project
     this.initControllers();
 
+    // Always keep handle error in the end
     this._app.use(errorMiddleware);
   }
 
