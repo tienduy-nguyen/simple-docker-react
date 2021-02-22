@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL,
+  password TEXT NOT NULL,
   first_name TEXT NULL DEFAULT '',
   last_name TEXT NULL DEFAULT '',
   full_name TEXT DEFAULT '',
