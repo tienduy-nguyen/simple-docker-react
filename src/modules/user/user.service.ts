@@ -5,6 +5,7 @@ import { injectable } from 'tsyringe';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './user.model';
 import { db } from 'src/database';
+import argon2 from 'argon2';
 
 @injectable()
 export class UserService {
@@ -15,7 +16,8 @@ export class UserService {
 
   public async getUsers(): Promise<User[]> {
     const query = `SELECT * FROM "users";`;
-    return await this._db.get(query);
+    const users = await this._db.all(query);
+    return users || [];
   }
 
   public async getUserByEmail(email: string): Promise<User> {
@@ -23,8 +25,8 @@ export class UserService {
     return await this._db.get(query);
   }
 
-  public async getUserById(id: number): Promise<User> {
-    const query = `SELECT * FROM "users" where id='${id}';`;
+  public async getUserById(id: number | string): Promise<User> {
+    const query = `SELECT * FROM "users" where id=${id};`;
     return await this._db.get(query);
   }
 
@@ -36,13 +38,14 @@ export class UserService {
       birthdate,
       city,
       country,
-      status,
       street,
       zip,
     } = data;
+    let password = await argon2.hash(data.password);
 
-    const userTemp = new User(
+    const userTemp = new User({
       email,
+      password,
       first_name,
       last_name,
       birthdate,
@@ -50,25 +53,37 @@ export class UserService {
       city,
       country,
       zip,
-      status,
-    );
+    });
     const mutation = `
-    INSERT INTO "users" 
+    INSERT INTO "users" (email, password, first_name, last_name, 
+                        full_name, birthdate, street, 
+                        city, country, zip, status, 
+                        createdAt, updatedAt)
 
-    (email, first_name, last_name, 
-    full_name, birthdate, street, city, country, zip, 
-    status, createdAt, updatedAt )
-
-    VALUES(${email}, ${first_name}, 
-      ${last_name}, ${userTemp.full_name}, ${birthdate},
-      ${street}, ${city}, ${country}, ${zip},
-       ${userTemp.createdAt}, ${userTemp.updatedAt})
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);
     `;
+    const values = [
+      email,
+      password,
+      first_name,
+      last_name,
+      userTemp.full_name,
+      birthdate,
+      street,
+      city,
+      country,
+      zip,
+      'ACTIVE',
+      userTemp.createdAt,
+      userTemp.updatedAt,
+    ];
 
-    await this._db.run(mutation);
+    await this._db.run(mutation, values);
+    userTemp.password = '';
+    return userTemp;
   }
 
-  public async updateUserById(id: number, data: UpdateUserDto) {
+  public async updateUserById(id: number | string, data: UpdateUserDto) {
     const user: User = await this.getUserById(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -99,25 +114,41 @@ export class UserService {
     const updatedAt = new Date().toISOString();
 
     const mutation = `UPDATE "users" 
-    SET email=${email}
-    first_name = ${first_name}
-    last_name = ${last_name}
-    full_name=${full_name}
-    birthdate = ${birthdate}
-    street = ${street}
-    city = ${city}
-    country = ${country}
-    zip = ${zip}
-    status = ${status}
-    updatedAt = ${updatedAt}
-    
-    WHERE id = '${id}' 
+    SET email= ?,
+    first_name = ?,
+    last_name = ?,
+    full_name= ?,
+    birthdate = ?,
+    street = ?,
+    city = ?,
+    country = ?,
+    zip = ?,
+    status = ?
+
+    WHERE id = ? 
     `;
-    return await this._db.run(mutation);
+    const values = [
+      email,
+      first_name,
+      last_name,
+      full_name,
+      birthdate,
+      street,
+      city,
+      country,
+      zip,
+      status.toString(),
+      id,
+    ];
+    await this._db.run(mutation, values);
+    await this._db.run(`UPDATE "users" SET "updatedAt"='${updatedAt}'`);
+    const { password, ...rest } = user;
+    return rest;
   }
 
-  public async deleteUser(id: number) {
-    const mutation = `DELETE FROM "user" where id=${id}`;
-    return await this._db.run(mutation);
+  public async deleteUser(id: number | string) {
+    const mutation = `DELETE FROM "users" where id=${id}`;
+    await this._db.run(mutation);
+    return { deleted: true };
   }
 }

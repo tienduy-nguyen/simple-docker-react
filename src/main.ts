@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { connectDb } from './database';
 import { App } from './app';
 
@@ -14,7 +15,8 @@ async function main() {
 
   // Init express application
   const app = new App();
-  app.listen(3000);
+  app.useGlobalPrefix('api');
+  app.listen(5000);
 }
 
 main().catch((err) => {

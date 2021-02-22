@@ -1,8 +1,10 @@
 import { generateFullName } from 'src/utils/generate-fullname';
+import { CreateUserDto } from './dto';
 
 export class User {
   id: number;
   email: string;
+  password: string;
   first_name: string;
   last_name: string;
   full_name: string;
@@ -15,28 +17,28 @@ export class User {
   createdAt: string;
   updatedAt: string;
 
-  constructor(
-    email: string,
-    first_name?: string,
-    last_name?: string,
-    birthdate?: string,
-    street?: string,
-    city?: string,
-    country?: string,
-    zip?: string,
-    status = Status.ACTIVE,
-  ) {
+  constructor(props: CreateUserDto) {
+    const {
+      email,
+      password,
+      first_name,
+      last_name,
+      birthdate,
+      street,
+      city,
+      country,
+      zip,
+    } = props;
     this.email = email;
+    this.password = password;
     this.first_name = first_name;
     this.last_name = last_name;
+    this.full_name = this._getFullName();
     this.birthdate = birthdate;
     this.street = street;
     this.city = city;
     this.country = country;
     this.zip = zip;
-    this.status = status;
-
-    this.full_name = this._getFullName();
 
     this.createdAt = new Date().toISOString();
     this.updatedAt = new Date().toISOString();
@@ -50,6 +52,9 @@ export class User {
   private _getFullName(): string {
     return generateFullName(this.first_name, this.last_name);
   }
+  // private async setHashPassword(plainText: string) {
+  //   this.password = await argon2.hash(plainText);
+  // }
 }
 
 export enum Status {

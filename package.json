@@ -9,15 +9,20 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register ./src/main.ts",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "seed": "ts-node -r tsconfig-paths/register ./src/seed.ts",
+    "migration": "ts-node -r tsconfig-paths/register ./src/migration.ts"
   },
   "dependencies": {
+    "argon2": "^0.27.1",
     "express": "^4.17.1",
     "sqlite": "^4.0.14",
     "sqlite3": "^5.0.0",
     "tsyringe": "^4.4.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/faker": "^5.1.7",
     "@types/node": "^14.14.31",
     "@types/sqlite3": "^3.1.7",
     "cross-env": "^7.0.3",
@@ -26,9 +31,11 @@
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-jest": "^24.0.1",
     "eslint-plugin-prettier": "^3.1.4",
+    "faker": "^5.4.0",
     "jest": "^26.4.2",
     "nodemon": "^2.0.4",
     "prettier": "^2.1.1",
+    "reflect-metadata": "^0.1.13",
     "ts-jest": "^26.5.1",
     "ts-node-dev": "^1.1.1",
     "tsconfig-paths": "^3.9.0",

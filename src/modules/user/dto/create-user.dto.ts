@@ -2,6 +2,7 @@ import { Status } from '../user.model';
 
 export class CreateUserDto {
   email: string;
+  password: string;
   first_name?: string;
   last_name?: string;
   birthdate?: string;
@@ -9,5 +10,4 @@ export class CreateUserDto {
   city?: string;
   country?: string;
   zip?: string;
-  status?: Status;
 }
