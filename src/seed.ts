@@ -26,7 +26,7 @@ async function main() {
     const zip = faker.address.zipCode();
     const status = 'ACTIVE';
 
-    const userTemp = new User(
+    const userTemp = new User({
       email,
       password,
       first_name,
@@ -36,7 +36,7 @@ async function main() {
       city,
       country,
       zip,
-    );
+    });
 
     const mutation = `
     INSERT INTO "users" (email, password, first_name, last_name, 

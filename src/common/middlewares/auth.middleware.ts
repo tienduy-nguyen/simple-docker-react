@@ -1,6 +1,5 @@
 import { Response, NextFunction, RequestHandler } from 'express';
 import { JwtService } from 'src/modules/auth/services/jwt.service';
-import { UserService } from 'src/modules/user/user.service';
 import { container } from 'tsyringe';
 import { ForbiddenException } from '../exceptions/forbidden.exception';
 import { RequestWithUser } from '../types';
@@ -15,14 +14,12 @@ export function authMiddleware(): RequestHandler {
         }
         const { accessToken } = req.session;
         const jwtService = container.resolve(JwtService);
-        const userService = container.resolve(UserService);
         const { userId } = jwtService.verify(accessToken);
 
-        const user = await userService.getUserById(userId);
-        if (!userId || !user) {
+        if (!userId) {
           throw new ForbiddenException('Token invalid or missing');
         }
-        req.user = { userId: user.id };
+        req.user = { userId };
         next();
       } catch (error) {
         next(error);

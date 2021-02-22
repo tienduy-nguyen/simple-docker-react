@@ -1,5 +1,5 @@
 import { generateFullName } from 'src/utils/generate-fullname';
-import { CreateUserDto } from './dto';
+import { RegisterUserDto } from '../auth/dto';
 
 export class User {
   id: number;
@@ -17,7 +17,7 @@ export class User {
   createdAt: string;
   updatedAt: string;
 
-  constructor(props: CreateUserDto) {
+  constructor(props: RegisterUserDto) {
     const {
       email,
       password,

@@ -1,11 +1,7 @@
 import express from 'express';
 import { injectable } from 'tsyringe';
-import { Request, Response, NextFunction } from 'express';
-import {
-  BadRequestException,
-  HttpException,
-  NotFoundException,
-} from 'src/common/exceptions';
+import { Response, NextFunction } from 'express';
+import { BadRequestException, NotFoundException } from 'src/common/exceptions';
 import { LoginUserDto, RegisterUserDto } from '../auth/dto';
 import { AuthService } from './services/auth.service';
 import { UserService } from '../user/user.service';
@@ -14,9 +10,10 @@ import { PayloadToken, RequestWithUser } from 'src/common/types';
 import { SESSION_AUTH } from 'src/common/config/session.config';
 import { User } from '../user/user.model';
 import handler from 'express-async-handler';
+import { authMiddleware } from 'src/common/middlewares/auth.middleware';
 @injectable()
-export class UserController {
-  public path = '/users';
+export class AuthController {
+  public path = '/auth';
   public router = express.Router();
 
   constructor(
@@ -28,18 +25,22 @@ export class UserController {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, handler(this.me));
-    this.router.post(`${this.path}`, handler(this.login));
+    this.router.get(`${this.path}`, authMiddleware(), handler(this.me));
+    this.router.post(`${this.path}/login`, handler(this.login));
     this.router.post(`${this.path}/register`, handler(this.register));
-    this.router.delete(`${this.path}`, handler(this.logout));
+    this.router.delete(`${this.path}`, authMiddleware(), handler(this.logout));
   }
 
   /* Private method for controller */
 
-  private me = async (req: Request, res: Response, next: NextFunction) => {
+  private me = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
-      const { id } = req.params;
-      const user = await this.userService.getUserById(id);
+      const { userId } = req.user;
+      const user = await this.userService.getUserById(userId);
       if (!user) {
         throw new NotFoundException('User not found');
       }
