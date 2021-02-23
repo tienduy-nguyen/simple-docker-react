@@ -24,7 +24,7 @@ export class AuthController {
     this.initializeRoutes();
   }
 
-  public initializeRoutes() {
+  private initializeRoutes() {
     this.router.get(`${this.path}`, authMiddleware(), handler(this.me));
     this.router.post(`${this.path}/login`, handler(this.login));
     this.router.post(`${this.path}/register`, handler(this.register));
@@ -33,7 +33,7 @@ export class AuthController {
 
   /* Private method for controller */
 
-  public me = async (
+  private me = async (
     req: RequestWithUser,
     res: Response,
     next: NextFunction,
@@ -49,7 +49,7 @@ export class AuthController {
       next(error);
     }
   };
-  public login = async (
+  private login = async (
     req: RequestWithUser,
     res: Response,
     next: NextFunction,
@@ -65,7 +65,7 @@ export class AuthController {
     }
   };
 
-  public register = async (
+  private register = async (
     req: RequestWithUser,
     res: Response,
     next: NextFunction,
@@ -82,7 +82,7 @@ export class AuthController {
     }
   };
 
-  public logout = async (
+  private logout = async (
     req: RequestWithUser,
     res: Response,
     next: NextFunction,
@@ -98,7 +98,7 @@ export class AuthController {
   };
 
   /* Helper methods */
-  public updateSession(user: User, req: RequestWithUser): { token: string } {
+  private updateSession(user: User, req: RequestWithUser): { token: string } {
     if (!user) {
       throw new BadRequestException('User not authenticated');
     }
