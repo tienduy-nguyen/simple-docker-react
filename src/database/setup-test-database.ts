@@ -26,6 +26,15 @@ async function main() {
   await db.run(
     `INSERT INTO "users" (email, password) VALUES('email-deleted@email.com','${hash}');`,
   );
+
+  const userIds: { id: number | string }[] = await db.all(
+    `SELECT id from "users"`,
+  );
+  for (let userWithId of userIds) {
+    await db.run(
+      `INSERT INTO "user_settings" ("userId") VALUES (${userWithId.id});`,
+    );
+  }
 }
 
 main()

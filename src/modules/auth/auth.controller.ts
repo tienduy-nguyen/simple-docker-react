@@ -11,6 +11,7 @@ import { SESSION_AUTH } from 'src/common/config/session.config';
 import { User } from '../user/user.model';
 import handler from 'express-async-handler';
 import { authMiddleware } from 'src/common/middlewares/auth.middleware';
+import { UserSettingsService } from '../user-settings/user-settings.service';
 @injectable()
 export class AuthController {
   public path = '/auth';
@@ -20,6 +21,7 @@ export class AuthController {
     private authService: AuthService,
     private userService: UserService,
     private jwtService: JwtService,
+    private userSettingsService: UserSettingsService,
   ) {
     this.initializeRoutes();
   }
@@ -73,6 +75,8 @@ export class AuthController {
     try {
       const data: RegisterUserDto = req.body;
       const user = await this.authService.registerUser(data);
+      // Create user settings default
+      await this.userSettingsService.createUserSettings(user.id);
 
       // Update auth token in session
       const { token } = this.updateSession(user, req);

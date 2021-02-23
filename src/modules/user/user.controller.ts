@@ -6,13 +6,19 @@ import { NotFoundException } from 'src/common/exceptions';
 import { UpdateUserDto } from './dto';
 import handler from 'express-async-handler';
 import { authMiddleware } from 'src/common/middlewares/auth.middleware';
+import { UserSettingsService } from '../user-settings/user-settings.service';
+import { RequestWithUser } from 'src/common/types';
+import { UpdateUserSettingsDto } from '../user-settings/dto/update-user-settings.dto';
 
 @injectable()
 export class UserController {
   public path = '/users';
   public router = express.Router();
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private userSettingsService: UserSettingsService,
+  ) {
     this.initializeRoutes();
   }
 
@@ -37,6 +43,17 @@ export class UserController {
       `${this.path}/:id`,
       authMiddleware(),
       handler(this.deleteUser),
+    );
+
+    this.router.get(
+      `/user-settings`,
+      authMiddleware(),
+      handler(this.getUserUserSettings),
+    );
+    this.router.put(
+      `/user-settings`,
+      authMiddleware(),
+      handler(this.updateUserSettings),
     );
   }
 
@@ -106,6 +123,40 @@ export class UserController {
       const id = req.params.id;
       await this.userService.deleteUser(id);
       res.json({ deleted: true });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private getUserUserSettings = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { userId } = req.user;
+      const userSettings = await this.userSettingsService.getUserSettings(
+        userId,
+      );
+      res.json(userSettings);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private updateUserSettings = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { userId } = req.user;
+      const data: UpdateUserSettingsDto = req.body;
+      const userSettings = await this.userSettingsService.updateUserSettings(
+        userId,
+        data,
+      );
+      res.json(userSettings);
     } catch (error) {
       next(error);
     }

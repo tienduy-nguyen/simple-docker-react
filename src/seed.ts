@@ -11,6 +11,7 @@ async function main() {
   );
   db = await connectDb();
   // Delete old data
+  await db.run(`DELETE from "user_settings";`);
   await db.run(`DELETE from "users";`);
 
   // Create dummy users
@@ -63,6 +64,15 @@ async function main() {
     ];
 
     await db.run(mutation, values);
+  }
+
+  const userIds: { id: number | string }[] = await db.all(
+    `SELECT id from "users"`,
+  );
+  for (let userWithId of userIds) {
+    await db.run(
+      `INSERT INTO "user_settings" ("userId") VALUES (${userWithId.id});`,
+    );
   }
   console.log(
     'End seeding....................................................',
