@@ -33,5 +33,5 @@ jobs:
         run: yarn install
 
       - name: Run tests
-        run: yarn test:2e2
+        run: yarn test:e2e
 
