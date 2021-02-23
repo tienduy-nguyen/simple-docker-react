@@ -105,4 +105,22 @@ describe('End to end tests: UserController', () => {
       expect(data.body.email).toEqual(email);
     });
   });
+
+  describe('UserSettings', () => {
+    beforeAll(async () => {
+      await agent.post('/api/auth/login').send({ email, password });
+    });
+    it('(GET) /api/user-settings', async () => {
+      const data = await agent.get('/api/user-settings').expect(200);
+      expect(data.body).toBeDefined();
+    });
+    it('(POST) /api/user-settings', async () => {
+      const data = await agent
+        .put('/api/user-settings')
+        .send({ hasSubscribedToNewsletter: 1 })
+        .expect(200);
+      expect(data.body).toBeDefined();
+      expect(data.body.hasSubscribedToNewsletter).toEqual(1);
+    });
+  });
 });
