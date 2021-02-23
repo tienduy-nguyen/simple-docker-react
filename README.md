@@ -14,6 +14,10 @@ The exercise is divided in steps. Each step will be reviewed independently using
 
 ## Description
 
+<details>
+<summary>Click here to expand</summary>
+
+
 1. Create the Users table
 
 ```
@@ -49,13 +53,13 @@ UserSettings
 6. Write the CRUD endpoints for this new table
 7. Allow the user's GET endpoint to return the userSettings alongside the user object
 
-## Requisites
+### Requisites
 
 - All endpoints must be tested
 - All endpoints must be documented
 - All endpoints should validate their inputs
 
-## How to use sqlite3/sqlite
+### How to use sqlite3/sqlite
 
 `sqlite3` is a wrapper around SQLite but doesn't provide a promise based API. Therefore, we use another wrapper which is `sqlite` which offers a Promise API around `sqlite3`.
 
@@ -74,3 +78,13 @@ await db.get(sqlQuery)
 // Get several items
 await db.all(sqlQuery)
 ```
+
+
+</details>
+
+## Features
+
+- Auth with jwt + session
+- Full testing features: Unit test, integration tests, end to end tests
+- Only raw query & mutation with sqlite
+- CI-CD with github action

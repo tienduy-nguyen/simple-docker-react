@@ -8,12 +8,16 @@ import { connectDb } from 'src/database';
 export class AppE2EModule {
   private _server: any;
   private _db: Database;
+  private _app: any;
 
   public get server() {
     return this._server;
   }
   public get db() {
     return this._db;
+  }
+  public get app() {
+    return this._app;
   }
 
   public async initServer(): Promise<void> {
@@ -32,5 +36,6 @@ export class AppE2EModule {
     app.useGlobalPrefix('api');
     app.listen(port);
     this._server = app.expressServer;
+    this._app = app;
   }
 }

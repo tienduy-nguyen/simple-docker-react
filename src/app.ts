@@ -5,6 +5,7 @@ import { AppController } from './app/app.controller';
 import { errorMiddleware } from './common/middlewares';
 import { HttpController } from './common/types/http.types';
 import { Server } from 'node:http';
+import http from 'http';
 
 export class App {
   private _controllers = [] as HttpController[];
@@ -22,7 +23,7 @@ export class App {
   }
 
   public get expressServer() {
-    return this._server;
+    return this._server || http.createServer(this._app);
   }
 
   public useGlobalPrefix(prefix: string) {
