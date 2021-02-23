@@ -9,8 +9,9 @@ describe('Integration tests: UserService', () => {
   let userService: UserService;
   let db: Database;
 
-  const oneUser = { email: 'some-email-not-exists@gmail.com' } as User;
-  const emailFake = 'some-email-not-exists@gmail.com';
+  const emailFake = 'some-email-exists@email.com';
+  const emailDeleted = 'email-deleted@email.com';
+  const oneUser = { email: emailFake } as User;
 
   beforeAll(async () => {
     db = await connectDb();
@@ -68,7 +69,7 @@ describe('Integration tests: UserService', () => {
   describe('deleteUser', () => {
     it('Should return an user', async () => {
       const user = await db.get(
-        `SELECT * FROM "users" WHERE email='${emailFake}';`,
+        `SELECT * FROM "users" WHERE email='${emailDeleted}';`,
       );
       expect(user).toBeDefined();
       const result = await userService.deleteUser(user.id);

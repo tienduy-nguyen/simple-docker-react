@@ -78,9 +78,9 @@ export class AuthService {
     return userCreated;
   }
 
-  public async loginUser(data: LoginUserDto) {
+  public async loginUser(data: LoginUserDto): Promise<User> {
     const { email, password } = data;
-    const user = await this.userService.getUserByEmail(email);
+    const user: User = await this.userService.getUserByEmail(email);
     if (!user) {
       throw new BadRequestException('Invalid credentials');
     }

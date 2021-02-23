@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register ./src/main.ts",
-    "setup:db": "cross-env NODE_ENV=test ts-node -r tsconfig-paths/register ./src/database/clear-database.ts",
+    "setup:db": "cross-env NODE_ENV=test ts-node -r tsconfig-paths/register ./src/database/setup-test-database.ts",
     "test": "jest",
     "test:integration": "yarn setup:db && jest --config ./test/integration/jest-integration.json",
     "test:e2e": "yarn setup:db && jest --config ./test/e2e/jest-e2e.json",
