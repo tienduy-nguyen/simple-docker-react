@@ -4,7 +4,7 @@ import { LoginUserDto, RegisterUserDto } from '../dto';
 import { User } from 'src/modules/user/user.model';
 import { DatabaseService } from 'src/database/database.service';
 import { UserService } from 'src/modules/user/user.service';
-import { BadRequestException } from 'src/common/exceptions';
+import { BadRequestException, ConflictException } from 'src/common/exceptions';
 import { PasswordService } from './password.service';
 
 @injectable()
@@ -29,6 +29,11 @@ export class AuthService {
       street,
       zip,
     } = data;
+    const check = this.userService.getUserByEmail(email);
+    if (check) {
+      throw new ConflictException(`User with email ${email} already existed`);
+    }
+
     let password = await this.passwordService.hash(data.password);
 
     const userTemp = new User({
