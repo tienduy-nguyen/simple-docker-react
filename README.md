@@ -1,5 +1,12 @@
 # Back-end exercise
 
+[![Unit tests](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/unit-tests.yml)
+[![Integration tests](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/integration-tests.yml)
+[![E2e tests](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/e2e-tests.yml)
+[![Build](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/build.yml/badge.svg)](https://github.com/tienduy-nguyen/nodejs-raw-query/actions/workflows/build.yml)
+
+---
+
 The goal of this exercise is to see if you're confortable with JavaScript and/or TypeScript and are used to writing functional, well **tested** and **documented** API endpoints.
 
 We'll be working on a micro service, called `users-service`, which is responsible for all CRUD operations on the `Users` table in the `Exercise` database. We'll use sqlite in this exercise as it requires no setup.
