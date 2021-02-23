@@ -23,6 +23,11 @@ export class UserController {
       authMiddleware(),
       handler(this.getUser),
     );
+    this.router.get(
+      `${this.path}/email/:email`,
+      authMiddleware(),
+      handler(this.getUserByEmail),
+    );
     this.router.put(
       `${this.path}/:id`,
       authMiddleware(),
@@ -52,6 +57,22 @@ export class UserController {
     try {
       const { id } = req.params;
       const user = await this.userService.getUserById(id);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      res.json(user);
+    } catch (error) {
+      next(error);
+    }
+  };
+  private getUserByEmail = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { email } = req.params;
+      const user = await this.userService.getUserByEmail(email);
       if (!user) {
         throw new NotFoundException('User not found');
       }

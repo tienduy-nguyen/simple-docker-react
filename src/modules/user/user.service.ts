@@ -4,12 +4,12 @@ import { generateFullName } from 'src/utils/generate-fullname';
 import { injectable } from 'tsyringe';
 import { UpdateUserDto } from './dto';
 import { User } from './user.model';
-import { IDatabaseService } from 'src/database/database.service.interface';
+import { DatabaseService } from 'src/database/database.service';
 
 @injectable()
 export class UserService {
   private _db: Database;
-  constructor(dbService: IDatabaseService) {
+  constructor(dbService: DatabaseService) {
     this._db = dbService.getConnection;
   }
 
@@ -83,12 +83,13 @@ export class UserService {
       city,
       country,
       zip,
-      status.toString(),
+      status?.toString(),
       id,
     ];
     await this._db.run(mutation, values);
     await this._db.run(`UPDATE "users" SET "updatedAt"='${updatedAt}'`);
-    const { password, ...rest } = user;
+    const updated = await this.getUserById(id);
+    const { password, ...rest } = updated;
     return rest;
   }
 

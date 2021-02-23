@@ -1,5 +1,5 @@
 import { Database } from 'sqlite';
-import { connectDb } from './database';
+import { connectDb } from '.';
 
 let db: Database;
 async function main() {
