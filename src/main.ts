@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser';
 import { sessionConfig } from './common/config/session.config';
 
 let db: any;
-async function main() {
+export async function main() {
   // Connect db
   try {
     db = await connectDb();
@@ -24,6 +24,7 @@ async function main() {
   // middleware
   app.expressApp.use(express.json());
   app.expressApp.use(express.urlencoded({ extended: true }));
+
   const port = 5000;
   app.expressApp.use(
     cors({

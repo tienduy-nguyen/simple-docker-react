@@ -19,7 +19,7 @@ describe('Integration tests: UserService', () => {
   });
 
   afterAll(async () => {
-    db.close();
+    await db.close();
   });
 
   it('Should be defined', () => {

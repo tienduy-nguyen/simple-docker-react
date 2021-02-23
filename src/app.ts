@@ -4,19 +4,25 @@ import { container } from 'tsyringe';
 import { AppController } from './app/app.controller';
 import { errorMiddleware } from './common/middlewares';
 import { HttpController } from './common/types/http.types';
+import { Server } from 'node:http';
 
 export class App {
   private _controllers = [] as HttpController[];
   private _app: Application;
   private _port = 3000;
   private _globalPrefix = '';
+  private _server: Server;
 
   constructor() {
-    this._app = express() as Application;
+    this._app = express();
   }
 
   public get expressApp() {
     return this._app;
+  }
+
+  public get expressServer() {
+    return this._server;
   }
 
   public useGlobalPrefix(prefix: string) {
@@ -26,11 +32,14 @@ export class App {
   public listen(port: number, alert = true) {
     this._port = port;
     this.bootstrapServer();
-    this._app.listen(this._port, () => {
+    this._server = this._app.listen(this._port, () => {
       if (alert) {
         console.log(`Server is running at http://localhost:${this._port}/`);
       }
     });
+  }
+  public close() {
+    this._server.close();
   }
 
   /* Private methods */

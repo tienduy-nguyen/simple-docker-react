@@ -19,7 +19,7 @@ describe('Integration tests: AuthService', () => {
   });
 
   afterAll(async () => {
-    db?.close();
+    await db?.close();
   });
 
   it('Should be defined', () => {
