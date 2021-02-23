@@ -29,7 +29,7 @@ export class AuthService {
       street,
       zip,
     } = data;
-    const check = this.userService.getUserByEmail(email);
+    const check = await this.userService.getUserByEmail(email);
     if (check) {
       throw new ConflictException(`User with email ${email} already existed`);
     }
