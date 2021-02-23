@@ -26,7 +26,7 @@
     "noEmit": false,
     "baseUrl": ".",
   },
-  "include": [ "src"],
+  "include": [ "src", "test/integration/auth.service.inte.spec.ts", "test/integration/user.service.inte.spec.ts"],
   "exclude": [
     "node_modules"
   ]

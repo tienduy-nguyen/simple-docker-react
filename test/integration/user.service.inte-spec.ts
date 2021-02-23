@@ -1,11 +1,11 @@
-import { User } from '../user.model';
-import { UserService } from '../user.service';
-import { UpdateUserDto } from '../dto';
+import { User } from '../../src/modules/user/user.model';
+import { UserService } from '../../src/modules/user/user.service';
+import { UpdateUserDto } from '../../src/modules/user/dto';
 import { container } from 'tsyringe';
 import { Database } from 'sqlite';
-import { connectDb } from 'src/database';
+import { connectDb } from '../../src/database';
 
-describe('UserService', () => {
+describe('Integration tests: UserService', () => {
   let userService: UserService;
   let db: Database;
 

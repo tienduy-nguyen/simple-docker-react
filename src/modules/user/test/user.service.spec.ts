@@ -2,7 +2,7 @@ import { User } from '../user.model';
 import { UserService } from '../user.service';
 import { UpdateUserDto } from '../dto';
 
-describe('UserService', () => {
+describe('Unit tests: UserService', () => {
   let userService: UserService;
 
   const dbServiceMock: any = {

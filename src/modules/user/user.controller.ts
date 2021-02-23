@@ -16,7 +16,7 @@ export class UserController {
     this.initializeRoutes();
   }
 
-  private initializeRoutes() {
+  public initializeRoutes() {
     this.router.get(`${this.path}/`, authMiddleware(), handler(this.getUsers));
     this.router.get(
       `${this.path}/:id`,
@@ -42,18 +42,14 @@ export class UserController {
 
   /* Private method for controller */
 
-  private getUsers = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  public getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.json(await this.userService.getUsers());
     } catch (error) {
       next(error);
     }
   };
-  private getUser = async (req: Request, res: Response, next: NextFunction) => {
+  public getUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
       const user = await this.userService.getUserById(id);
@@ -65,7 +61,7 @@ export class UserController {
       next(error);
     }
   };
-  private getUserByEmail = async (
+  public getUserByEmail = async (
     req: Request,
     res: Response,
     next: NextFunction,
@@ -82,7 +78,7 @@ export class UserController {
     }
   };
 
-  private updateUser = async (
+  public updateUser = async (
     req: Request,
     res: Response,
     next: NextFunction,
@@ -97,7 +93,7 @@ export class UserController {
     }
   };
 
-  private deleteUser = async (
+  public deleteUser = async (
     req: Request,
     res: Response,
     next: NextFunction,

@@ -6,7 +6,7 @@ const email = 'some-email@gmail.com';
 const password = 'some-password';
 const oneUser = { email, password } as User;
 
-describe('AuthService', () => {
+describe('Unit tests: AuthService', () => {
   let authService: AuthService;
 
   const mockUserService: any = {
