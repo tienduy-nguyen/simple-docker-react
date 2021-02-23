@@ -24,6 +24,7 @@
     "skipLibCheck": true,
     "allowJs": true,
     "noEmit": false,
+    "outDir": "./dist",
     "baseUrl": ".",
   },
   "include": [ "src", "test/integration/auth.service.inte.spec.ts", "test/integration/user.service.inte.spec.ts"],

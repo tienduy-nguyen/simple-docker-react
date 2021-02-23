@@ -1,3 +1,6 @@
 .npmr
 node_modules
 *.db
+build
+dist
+out
