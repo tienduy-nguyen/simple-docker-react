@@ -82,18 +82,14 @@ export class AuthController {
     }
   };
 
-  private logout = async (
-    req: RequestWithUser,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  private logout = async (req: RequestWithUser, res: Response) => {
     try {
       req.res?.clearCookie(SESSION_AUTH);
       await req.session!.destroy();
-      return { logout: true };
+      res.json({ logout: true });
     } catch (error) {
       console.error(error);
-      return { logout: false };
+      res.json({ logout: false });
     }
   };
 
