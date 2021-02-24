@@ -91,7 +91,9 @@ await db.all(sqlQuery)
 
 ## Features
 
-- Auth with jwt + session
+- Auth with [jwt](https://github.com/auth0/node-jsonwebtoken) + [session](https://github.com/expressjs/session)
 - Full testing features: Unit test, integration tests, end to end tests
-- Only raw query & mutation with sqlite
-- CI-CD with github action
+- Only raw query & mutation with [sqlite3](https://github.com/mapbox/node-sqlite3)
+- CI-CD with [Github actions](https://github.com/features/actions)
+- Dependency injection with [tsyringe](https://github.com/microsoft/tsyringe)
+- Clean architecture with Model-Service-Controller pattern

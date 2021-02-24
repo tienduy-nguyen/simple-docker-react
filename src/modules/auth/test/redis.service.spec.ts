@@ -3,9 +3,14 @@ import { RedisService } from '../services/redis.service';
 
 describe('RedisService', () => {
   let redisService: RedisService;
-  beforeEach(() => {
+  beforeAll(() => {
     redisService = container.resolve(RedisService);
   });
+
+  afterAll(async () => {
+    redisService.redis.disconnect();
+  });
+
   it('Should be defined', () => {
     expect(redisService).toBeDefined();
   });
